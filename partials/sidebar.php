@@ -63,7 +63,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="dashboard.php" class="nav-link">
+            <a href="client.php" class="nav-link">
               <i class="far fa-circle nav-icon"></i>          
               <p>Client</p>
             </a>

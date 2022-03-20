@@ -16,7 +16,7 @@ include('partials/global.php');
     </head>
     <body>
         <div class="wrapper">
-            <?php include('partials/topba_back.php'); ?>
+            <?php include('partials/topbar_back.php'); ?>
            
             <?php include('partials/sidebar.php'); ?>
            

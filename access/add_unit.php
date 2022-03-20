@@ -10,16 +10,16 @@ include_once '../partials/global.php';
 
     if(isset($_POST['no_id']) && isset($_POST['model']) && isset($_POST['serial_num']) && isset($_POST['client']) && isset($_POST['tahun'])){
 
-            $sql = "INSERT INTO 
-            unit (no_id, model, serial_num, client, tahun) 
-            VALUES ('".$_POST['no_id']."','".$_POST['model']."','".$_POST['serial_num']."','".$_POST['client']."','".$_POST['tahun']."')";
+        $sql = "INSERT INTO 
+        unit (no_id, model, serial_num, client, tahun) 
+        VALUES ('".$_POST['no_id']."','".$_POST['model']."','".$_POST['serial_num']."','".$_POST['client']."','".$_POST['tahun']."')";
 
             
         if(!mysqli_query($conn, $sql)){
             echo("Error log: " . $conn -> error);
         }else{
             echo "Berhasil";
-            header("location: ../login.php");
+            header("location: ../unit.php");
             die();
         }
     }else{

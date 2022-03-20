@@ -12,7 +12,7 @@ include('partials/global.php');
     <head>
         <?php include('partials/head.php'); ?>
         
-        <title><?php echo $webname; ?> - Unit</title>        
+        <title><?php echo $webname; ?> - Client</title>        
     </head>
     <body>
         <div class="wrapper">
@@ -27,10 +27,10 @@ include('partials/global.php');
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Unit</h1>
+                            <h1>Client</h1>
                         </div>
                         <div class="col-sm-6">
-                            <button type="button" class="btn btn-success btn-sm float-right"  data-toggle="modal" data-target="#unitModal">Tambah Unit</button>    
+                            <button type="button" class="btn btn-success btn-sm float-right"  data-toggle="modal" data-target="#clientModal">Tambah Client</button>    
                         </div>          
                     </div>
                 </div><!-- /.container-fluid -->
@@ -48,33 +48,32 @@ include('partials/global.php');
                                 <thead>
                                     <tr>                                              
                                         <th>No.</th>
-                                        <th>No. ID</th>
-                                        <th>Model</th>
-                                        <th>Serial Number</th>
-                                        <th>Client</th>
-                                        <th>Tahun</th>
-                                        <th>Foto</th>
+                                        <th>Nama Client</th>
+                                        <th>Username</th>
+                                        <th>Unit</th>
+                                        <th>Password</th>                                       
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php 
                                             include 'access/db_access.php';
-                                            $sql = "SELECT unit.*, client.nama as nama_client 
-                                            FROM unit 
-                                            LEFT JOIN client 
-                                            ON unit.client = client.id_client 
-                                            ORDER BY unit.id_unit DESC";
                                                                                 
-                                            $load = mysqli_query($conn, $sql);   
+                                            $load = mysqli_query($conn, "SELECT * FROM client ORDER BY id_client DESC");   
                                             while ($row = mysqli_fetch_array($load)){                                         
                                             echo '<tr>';
-                                                echo '<td>'.$row['id_unit'].'</td>';
-                                                echo '<td>'.$row['no_id'].'</td>';
-                                                echo '<td>'.$row['model'].'</td>';
-                                                echo '<td>'.$row['serial_num'].'</td>';
-                                                echo '<td>'.$row['nama_client'].'</td>';                                                                                 
-                                                echo '<td>'.$row['tahun'].'</td>';
-                                                echo '<td>-</td>';
+                                                echo '<td>'.$row['id_client'].'</td>';
+                                                echo '<td>'.$row['nama'].'</td>';
+                                                echo '<td>'.$row['username'].'</td>';
+                                                echo '<td>
+                                                    <button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#addUnitModal" 
+                                                    data-cliend-id="'.$row['id_client'].'"><i class="fas fa-plus"></i> Tambah</button>
+                                                    <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#viewUnitModal" 
+                                                    data-cliend-id="'.$row['id_client'].'"><i class="fas fa-search"></i> Lihat Semua</button>
+                                                </td>';
+                                                echo '<td>
+                                                    <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#resetPassModal" 
+                                                    data-cliend-id="'.$row['id_client'].'"><i class="fas fa-sync"></i> Reset Password</button>
+                                                </td>';
                                             echo '</tr>';                                
                                             }   
                                     ?>
@@ -89,7 +88,44 @@ include('partials/global.php');
                 </section>
                 <!-- /.content -->
 
-                <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Tambah Client Baru</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">                                    
+                                <form action="access/add_client.php" method="post">                                        
+                                    <div class="form-group">
+                                        <label class="mb-1" for="namaTxt">Nama</label>
+                                        <input class="form-control py-4" id="namaTxt" type="text" name="nama"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="mb-1" for="usernameTxt">Username</label>
+                                        <input class="form-control py-4" id="usernameTxt" type="text" name="username"/>
+                                    </div>  
+                                    <div class="form-group">
+                                        <label class="mb-1" for="passwordTxt">Password</label>
+                                        <input class="form-control py-4" id="passwordTxt" type="password" name="password"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="mb-1" for="password2Txt">Ulangi Password</label>
+                                        <input class="form-control py-4" id="password2Txt" type="password" name="password2"/>
+                                    </div>                                                                              
+                                    <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">                                                
+                                        <button class="btn btn-primary"  type="submit">Simpan</button>
+                                    </div>
+                                </form>                                    
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>  
+
+                <div class="modal fade" id="addUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -141,6 +177,8 @@ include('partials/global.php');
                         </div>
                     </div>
                 </div>  
+
+
             </div>
             <!-- /.content-wrapper -->
             <?php include('partials/footer.php'); ?>
