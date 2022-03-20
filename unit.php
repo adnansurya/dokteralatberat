@@ -44,9 +44,10 @@ include('partials/global.php');
                    
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table id="bootstrap-data-table" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>                                              
+                                        <th>No.</th>
                                         <th>No. ID</th>
                                         <th>Model</th>
                                         <th>Serial Number</th>
@@ -56,7 +57,22 @@ include('partials/global.php');
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    <?php 
+                                            include 'access/db_access.php';
+                                                                                
+                                            $load = mysqli_query($conn, "SELECT * FROM unit ORDER BY id_unit DESC");   
+                                            while ($row = mysqli_fetch_array($load)){                                         
+                                            echo '<tr>';
+                                                echo '<td>'.$row['id_unit'].'</td>';
+                                                echo '<td>'.$row['no_id'].'</td>';
+                                                echo '<td>'.$row['model'].'</td>';
+                                                echo '<td>'.$row['serial_num'].'</td>';
+                                                echo '<td>'.$row['client'].'</td>';                                                                                 
+                                                echo '<td>'.$row['tahun'].'</td>';
+                                                echo '<td>-</td>';
+                                            echo '</tr>';                                
+                                            }   
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
@@ -80,27 +96,27 @@ include('partials/global.php');
                             <div class="modal-body">                                    
                                 <form action="access/add_unit.php" method="post">                                        
                                     <div class="form-group">
-                                        <label class="small mb-1" for="no_idTxt">No. ID</label>
+                                        <label class="mb-1" for="no_idTxt">No. ID</label>
                                         <input class="form-control py-4" id="no_idTxt" type="text" name="no_id"/>
                                     </div>
                                     <div class="form-group">
-                                        <label class="small mb-1" for="modelTxt">Model</label>
+                                        <label class="mb-1" for="modelTxt">Model</label>
                                         <input class="form-control py-4" id="modelTxt" type="text" name="model"/>
                                     </div>  
                                     <div class="form-group">
-                                        <label class="small mb-1" for="serial_numTxt">Serial Number</label>
+                                        <label class="mb-1" for="serial_numTxt">Serial Number</label>
                                         <input class="form-control py-4" id="serial_numTxt" type="text" name="serial_num"/>
                                     </div>
                                     <div class="form-group">
-                                        <label class="small mb-1" for="clientTxt">Client</label>
+                                        <label class="mb-1" for="clientTxt">Client</label>
                                         <input class="form-control py-4" id="clientTxt" type="text" name="client"/>
                                     </div> 
                                     <div class="form-group">
-                                        <label class="small mb-1" for="tahunTxt">Tahun</label>
+                                        <label class="mb-1" for="tahunTxt">Tahun</label>
                                         <input class="form-control py-4" id="tahunTxt" type="number" name="tahun"/>
                                     </div> 
                                     <div class="form-group">
-                                        <label  class="small mb-1" for="exampleInputFile">Foto</label>
+                                        <label  class="mb-1" for="exampleInputFile">Foto</label>
                                         <div class="input-group">
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="exampleInputFile">
@@ -127,5 +143,6 @@ include('partials/global.php');
            
         </div>
         <?php include('partials/scripts.php'); ?>
+        <?php include('partials/datatableJs.php'); ?>
     </body>
 </html>
