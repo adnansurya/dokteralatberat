@@ -156,7 +156,8 @@ include('partials/global.php');
                                 </button>
                             </div>
                             <div class="modal-body">                                    
-                                <form action="#" method="post">                                        
+                                <form action="access/edit_unit.php" method="post">   
+                                    <input type="hidden" name="id_unit">                                     
                                     <div class="form-group">
                                         <label class="mb-1" for="no_idTxt">No. ID</label>
                                         <input class="form-control py-4" id="no_idTxt" type="text" name="no_id"/>
@@ -226,6 +227,7 @@ include('partials/global.php');
                                 // let changeForm = Date.parse(tglLahir).format('dd/mm/yyyy');
                                 // console.log(changeForm);
                                 // alert(penerima.card_id);
+                                $(e.currentTarget).find('input[name="id_unit"]').val(unit.id_unit);
                                 $(e.currentTarget).find('input[name="no_id"]').val(unit.no_id);
                                 $(e.currentTarget).find('input[name="model"]').val(unit.model);
                                 $(e.currentTarget).find('input[name="serial_num"]').val(unit.serial_num);                                
@@ -234,9 +236,7 @@ include('partials/global.php');
                                 
                             }
                         });
-                    //populate the textbox
-                    
-                        // $(e.currentTarget).find('input[name="token"]').val(token);
+                   
                 });
             } );
 
