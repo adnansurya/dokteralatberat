@@ -256,7 +256,7 @@ include('partials/global.php');
                                 $(e.currentTarget).find('input[name="model"]').val(unit.model);
                                 $(e.currentTarget).find('input[name="serial_num"]').val(unit.serial_num);                                
                                 $(e.currentTarget).find('input[name="tahun"]').val(unit.tahun);                                
-                                $(e.currentTarget).find('input[name="client"]').val(unit.client);                
+                                $(e.currentTarget).find('select[name="id_client"]').val(unit.id_client).change();                
                                 
                             }
                         });
