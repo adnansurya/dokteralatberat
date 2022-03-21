@@ -67,8 +67,8 @@ include('partials/global.php');
                                                 echo '<td>'.$row['no_hp'].'</td>';  
                                                 echo '<td>'.$row['foto_identitas'].'</td>';                                                                                               
                                                 echo '<td>
-                                                    <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#resetPassModal" 
-                                                    data-cliend-id="'.$row['id_operator'].'"><i class="fas fa-sync"></i> Reset Password</button>
+                                                    <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#editOperatorModal" 
+                                                    data-id-operator="'.$row['id_operator'].'"><i class="fas fa-edit"></i> Edit Data</button>
                                                 </td>';
                                             echo '</tr>';                                
                                             }   
@@ -125,40 +125,28 @@ include('partials/global.php');
                     </div>
                 </div>  
 
-                <div class="modal fade" id="addUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="editOperatorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Tambah Unit Baru</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Data Operator</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">                                    
-                                <form action="access/add_unit.php" method="post"> 
-                                    <input type="hidden" name="id_client">                                       
+                                <form action="access/edit_operator.php" method="post">  
+                                    <input type="hidden" name="id_operator">                                         
                                     <div class="form-group">
-                                        <label class="mb-1" for="no_idTxt">No. ID</label>
-                                        <input class="form-control py-4" id="no_idTxt" type="text" name="no_id"/>
+                                        <label class="mb-1" for="namaTxt">Nama</label>
+                                        <input class="form-control py-4" id="namaTxt" type="text" name="nama"/>
                                     </div>
                                     <div class="form-group">
-                                        <label class="mb-1" for="modelTxt">Model</label>
-                                        <input class="form-control py-4" id="modelTxt" type="text" name="model"/>
-                                    </div>  
+                                        <label class="mb-1" for="no_hpTxt">No. HP</label>
+                                        <input class="form-control py-4" id="no_hpTxt" type="text" name="no_hp"/>
+                                    </div>    
                                     <div class="form-group">
-                                        <label class="mb-1" for="serial_numTxt">Serial Number</label>
-                                        <input class="form-control py-4" id="serial_numTxt" type="text" name="serial_num"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="mb-1" for="clientTxt">Client</label>
-                                        <input class="form-control py-4" id="clientTxt" type="text" name="nama_client" disabled/>
-                                    </div> 
-                                    <div class="form-group">
-                                        <label class="mb-1" for="tahunTxt">Tahun</label>
-                                        <input class="form-control py-4" id="tahunTxt" type="number" name="tahun"/>
-                                    </div> 
-                                    <div class="form-group">
-                                        <label  class="mb-1" for="exampleInputFile">Foto</label>
+                                        <label  class="mb-1" for="exampleInputFile">Foto KTP/SIM</label>
                                         <div class="input-group">
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="exampleInputFile">
@@ -168,7 +156,7 @@ include('partials/global.php');
                                             <span class="input-group-text">Upload</span>
                                         </div>
                                         </div>
-                                    </div>                                           
+                                    </div>                                                                                                                   
                                     <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">                                                
                                         <button class="btn btn-primary"  type="submit">Simpan</button>
                                     </div>
@@ -177,7 +165,7 @@ include('partials/global.php');
                         
                         </div>
                     </div>
-                </div>  
+                </div> 
 
 
             </div>
@@ -192,16 +180,32 @@ include('partials/global.php');
 
                 
             $(document).ready(function() {            
-                $('#addUnitModal').on('show.bs.modal', function(e) {
+                $('#editOperatorModal').on('show.bs.modal', function(e) {
 
                     //get data-id attribute of the clicked element
-                    let id_client = $(e.relatedTarget).data('id-client');
-                    let nama = $(e.relatedTarget).data('nama-client');    
-                    
-                    $(e.currentTarget).find('input[name="id_client"]').val(id_client);
-                    $(e.currentTarget).find('input[name="nama_client"]').val(nama); 
-                   
-                });
+                    let id_operator = $(e.relatedTarget).data('id-operator');                     
+                    let operator;               
+
+                    $.get( "api/get_operator.php", { id : id_operator } )
+                        .done(function( data ) {
+                            // alert( "Data Loaded: " + data );
+                            let dataHasil = JSON.parse(data);
+                            
+                            if(dataHasil.result == 'success'){
+                                operator = dataHasil.data;                                
+                                // let changeForm = Date.parse(tglLahir).format('dd/mm/yyyy');
+                                // console.log(changeForm);
+                                // alert(penerima.card_id);
+                                $(e.currentTarget).find('input[name="id_operator"]').val(operator.id_operator);
+                                $(e.currentTarget).find('input[name="nama"]').val(operator.nama);
+                                $(e.currentTarget).find('input[name="no_hp"]').val(operator.no_hp);                                           
+                                
+                            }
+                        });
+
+                    });
+
+
             } );
 
         </script>
