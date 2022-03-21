@@ -69,7 +69,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="dashboard.php" class="nav-link">
+            <a href="operator.php" class="nav-link">
               <i class="far fa-circle nav-icon"></i>          
               <p>Operator</p>
             </a>
