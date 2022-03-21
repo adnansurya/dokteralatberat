@@ -11,6 +11,7 @@ include('partials/global.php');
 <html lang="en">
     <head>
         <?php include('partials/head.php'); ?>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
         
         <title><?php echo $webname; ?> - Unit</title>        
     </head>
@@ -172,7 +173,16 @@ include('partials/global.php');
                                     </div>
                                     <div class="form-group">
                                         <label class="mb-1" for="clientTxt">Client</label>
-                                        <input class="form-control py-4" id="clientTxt" type="text" name="client"/>
+                                        <!-- <input class="form-control py-4" id="clientTxt" type="text" name="client"/> -->
+                                        <select class="selectpicker form-control" data-live-search="true">
+                                            <?php
+                                                 $load = mysqli_query($conn, "SELECT * FROM client");   
+                                                 while ($row = mysqli_fetch_array($load)){ 
+                                                    echo '<option value="'.$row['id_client'].'">'.$row['nama'].'</option>';
+                                                 }
+                                            ?>                                            
+                                        </select>
+
                                     </div> 
                                     <div class="form-group">
                                         <label class="mb-1" for="tahunTxt">Tahun</label>
@@ -207,10 +217,12 @@ include('partials/global.php');
         </div>
         <?php include('partials/scripts.php'); ?>
         <?php include('partials/datatableJs.php'); ?>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
         <script type="text/javascript">
 
                 
             $(document).ready(function() {
+                $('.selectpicker').selectpicker();
                 $('#editUnitModal').on('show.bs.modal', function(e) {
 
                     //get data-id attribute of the clicked element
