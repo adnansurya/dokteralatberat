@@ -4,7 +4,7 @@ session_start();
 
 // include_once '../bot/command.php';
 include_once 'db_access.php';
-include_once '../partials/global.php';
+// include_once '../partials/global.php';
 
 // if(($_SESSION['logged_role'] == 'SU') || ($_SESSION['logged_role'] == 'AD') ){
 
