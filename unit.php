@@ -48,7 +48,7 @@ include('partials/global.php');
                             <table id="bootstrap-data-table" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>                                              
-                                        <th>No.</th>
+                                        <th>No. Unit</th>
                                         <th>No. ID</th>
                                         <th>Model</th>
                                         <th>Serial Number</th>
