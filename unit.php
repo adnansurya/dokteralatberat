@@ -28,7 +28,7 @@ include('partials/global.php');
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Unit</h1>
+                            <h1>Unit <?php if(isset($_GET['client'])){ echo '<b>'.$_GET['client'].'</b>'; }?></h1>
                         </div>
                         <div class="col-sm-6">
                             <button type="button" class="btn btn-success btn-sm float-right"  data-toggle="modal" data-target="#addUnitModal">Tambah Unit</button>    
@@ -61,12 +61,18 @@ include('partials/global.php');
                                 <tbody>
                                     <?php 
                                             include 'access/db_access.php';
+
+                                            if(isset($_GET['client'])){ 
+                                                $username_filter = "WHERE client.username='".$_GET['client']."'";                                                 
+                                            }else{
+                                                $username_filter = '';
+                                            }
+                                            
                                             $sql = "SELECT unit.*, client.nama as nama_client 
                                             FROM unit 
                                             LEFT JOIN client 
-                                            ON unit.client = client.id_client 
-                                            ORDER BY unit.id_unit DESC";
-                                                                                
+                                            ON unit.id_client = client.id_client ".$username_filter."                                                
+                                            ORDER BY unit.id_unit DESC";                                                                                                                           
                                             $load = mysqli_query($conn, $sql);   
                                             while ($row = mysqli_fetch_array($load)){                                         
                                             echo '<tr>';
@@ -120,7 +126,14 @@ include('partials/global.php');
                                     </div>
                                     <div class="form-group">
                                         <label class="mb-1" for="clientTxt">Client</label>
-                                        <input class="form-control py-4" id="clientTxt" type="text" name="client"/>
+                                        <select class="selectpicker form-control" data-live-search="true" name="id_client">
+                                            <?php
+                                                 $load = mysqli_query($conn, "SELECT * FROM client");   
+                                                 while ($row = mysqli_fetch_array($load)){ 
+                                                    echo '<option value="'.$row['id_client'].'">'.$row['nama'].'</option>';
+                                                 }
+                                            ?>                                            
+                                        </select>
                                     </div> 
                                     <div class="form-group">
                                         <label class="mb-1" for="tahunTxt">Tahun</label>
@@ -143,7 +156,6 @@ include('partials/global.php');
                                     </div>
                                 </form>                                    
                             </div>
-                        
                         </div>
                     </div>
                 </div>  
@@ -174,7 +186,7 @@ include('partials/global.php');
                                     <div class="form-group">
                                         <label class="mb-1" for="clientTxt">Client</label>
                                         <!-- <input class="form-control py-4" id="clientTxt" type="text" name="client"/> -->
-                                        <select class="selectpicker form-control" data-live-search="true">
+                                        <select class="selectpicker form-control" data-live-search="true" name="id_client">
                                             <?php
                                                  $load = mysqli_query($conn, "SELECT * FROM client");   
                                                  while ($row = mysqli_fetch_array($load)){ 

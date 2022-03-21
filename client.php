@@ -66,7 +66,7 @@ include('partials/global.php');
                                                 echo '<td>'.$row['username'].'</td>';
                                                 echo '<td>
                                                     <button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#addUnitModal" 
-                                                    data-cliend-id="'.$row['id_client'].'"><i class="fas fa-plus"></i> Tambah</button>
+                                                    data-id-client="'.$row['id_client'].'" data-nama-client="'.$row['nama'].'"><i class="fas fa-plus"></i> Tambah</button>
                                                     <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#viewUnitModal" 
                                                     data-cliend-id="'.$row['id_client'].'"><i class="fas fa-search"></i> Lihat Semua</button>
                                                 </td>';
@@ -135,7 +135,8 @@ include('partials/global.php');
                                 </button>
                             </div>
                             <div class="modal-body">                                    
-                                <form action="access/add_unit.php" method="post">                                        
+                                <form action="access/add_unit.php" method="post"> 
+                                    <input type="hidden" name="id_client">                                       
                                     <div class="form-group">
                                         <label class="mb-1" for="no_idTxt">No. ID</label>
                                         <input class="form-control py-4" id="no_idTxt" type="text" name="no_id"/>
@@ -150,7 +151,7 @@ include('partials/global.php');
                                     </div>
                                     <div class="form-group">
                                         <label class="mb-1" for="clientTxt">Client</label>
-                                        <input class="form-control py-4" id="clientTxt" type="text" name="client"/>
+                                        <input class="form-control py-4" id="clientTxt" type="text" name="nama_client" disabled/>
                                     </div> 
                                     <div class="form-group">
                                         <label class="mb-1" for="tahunTxt">Tahun</label>
@@ -187,5 +188,22 @@ include('partials/global.php');
         </div>
         <?php include('partials/scripts.php'); ?>
         <?php include('partials/datatableJs.php'); ?>
+        <script type="text/javascript">
+
+                
+            $(document).ready(function() {            
+                $('#addUnitModal').on('show.bs.modal', function(e) {
+
+                    //get data-id attribute of the clicked element
+                    let id_client = $(e.relatedTarget).data('id-client');
+                    let nama = $(e.relatedTarget).data('nama-client');    
+                    
+                    $(e.currentTarget).find('input[name="id_client"]').val(id_client);
+                    $(e.currentTarget).find('input[name="nama_client"]').val(nama); 
+                   
+                });
+            } );
+
+        </script>
     </body>
 </html>

@@ -8,11 +8,11 @@ include_once 'db_access.php';
 
 // if(($_SESSION['logged_role'] == 'SU') || ($_SESSION['logged_role'] == 'AD') ){
 
-    if(isset($_POST['no_id']) && isset($_POST['model']) && isset($_POST['serial_num']) && isset($_POST['client']) && isset($_POST['tahun'])){
+    if(isset($_POST['no_id']) && isset($_POST['model']) && isset($_POST['serial_num']) && isset($_POST['id_client']) && isset($_POST['tahun'])){
 
         $sql = "INSERT INTO 
-        unit (no_id, model, serial_num, client, tahun) 
-        VALUES ('".$_POST['no_id']."','".$_POST['model']."','".$_POST['serial_num']."','".$_POST['client']."','".$_POST['tahun']."')";
+        unit (no_id, model, serial_num, id_client, tahun) 
+        VALUES ('".$_POST['no_id']."','".$_POST['model']."','".$_POST['serial_num']."','".$_POST['id_client']."','".$_POST['tahun']."')";
 
             
         if(!mysqli_query($conn, $sql)){
