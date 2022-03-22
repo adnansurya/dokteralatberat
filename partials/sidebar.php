@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-light-lightblue elevation-2">
     <!-- Brand Logo -->
     <a href="index.php" class="brand-link d-none d-sm-block">
-      <img src="image/logo.png" alt="Logo Makassar Robotics" class="brand-image img-circle elevation-0" style="opacity: .8">
+      <img src="image/logo.png" alt="Logo Dokter Alat Berat" class="brand-image img-circle elevation-0" style="opacity: .8">
       <span class="brand-text font-weight-light">DokterAlatBerat</span>
     </a>
 
@@ -75,9 +75,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="dashboard.php" class="nav-link">
+            <a href="admin.php" class="nav-link">
               <i class="far fa-circle nav-icon"></i>          
-              <p>User</p>
+              <p>Admin</p>
             </a>
           </li>
         <?php 
