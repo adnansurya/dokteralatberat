@@ -51,7 +51,8 @@ include('partials/global.php');
                                         <th>No.</th>
                                         <th>Nama Admin</th>
                                         <th>Username</th>
-                                        <th>Unit</th>
+                                        <th>Email</th>
+                                        <th>Client</th>
                                         <th>Action</th>                                       
                                     </tr>
                                 </thead>
@@ -59,24 +60,25 @@ include('partials/global.php');
                                     <?php 
                                             include 'access/db_access.php';
                                                                                 
-                                            $load = mysqli_query($conn, "SELECT * FROM client ORDER BY id_client DESC");   
+                                            $load = mysqli_query($conn, "SELECT * FROM admin ORDER BY id_admin DESC");   
                                             while ($row = mysqli_fetch_array($load)){                                         
                                             echo '<tr>';
-                                                echo '<td>'.$row['id_client'].'</td>';
+                                                echo '<td>'.$row['id_admin'].'</td>';
                                                 echo '<td>'.$row['nama'].'</td>';
                                                 echo '<td>'.$row['username'].'</td>';
+                                                echo '<td>'.$row['email'].'</td>';
                                                 echo '<td>
                                                     <button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#addUnitModal" 
-                                                    data-id-client="'.$row['id_client'].'" data-nama-client="'.$row['nama'].'"><i class="fas fa-plus"></i> Tambah</button>
+                                                    data-id-client="'.$row['id_admin'].'" data-nama-client="'.$row['nama'].'"><i class="fas fa-plus"></i> Tambah</button>
                                                     <a href="unit.php?client='.$row['username'].'">
                                                         <button type="button" class="btn btn-info btn-sm m-1"><i class="fas fa-search"></i> Lihat Semua</button>
                                                     </a>
                                                 </td>';
                                                 echo '<td>
-                                                    <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#editClientModal" 
-                                                    data-id-client="'.$row['id_client'].'"><i class="fas fa-edit"></i> Edit Data</button>
+                                                    <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#editAdminModal" 
+                                                    data-id-admin="'.$row['id_admin'].'"><i class="fas fa-edit"></i> Edit Data</button>
                                                     <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#resetPassModal" 
-                                                    data-id-client="'.$row['id_client'].'"><i class="fas fa-sync"></i> Reset Password</button>
+                                                    data-id-admin="'.$row['id_admin'].'"><i class="fas fa-sync"></i> Reset Password</button>
                                                 </td>';
                                             echo '</tr>';                                
                                             }   
@@ -133,18 +135,18 @@ include('partials/global.php');
                     </div>
                 </div>  
 
-                <div class="modal fade" id="editClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="editAdminModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Edit Data Client</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Data Admin</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">                                    
-                                <form action="access/edit_client.php" method="post"> 
-                                    <input type="hidden" name="id_client">                                       
+                                <form action="access/edit_admin.php" method="post"> 
+                                    <input type="hidden" name="id_admin">                                       
                                     <div class="form-group">
                                         <label class="mb-1" for="namaTxt">Nama</label>
                                         <input class="form-control py-4" id="namaTxt" type="text" name="nama"/>
@@ -152,7 +154,11 @@ include('partials/global.php');
                                     <div class="form-group">
                                         <label class="mb-1" for="usernameTxt">Username</label>
                                         <input class="form-control py-4" id="usernameTxt" type="text" name="username"/>
-                                    </div>                                                                                                                   
+                                    </div>         
+                                    <div class="form-group">
+                                        <label class="mb-1" for="emailTxt">Email</label>
+                                        <input class="form-control py-4" id="emailTxt" type="email" name="email"/>
+                                    </div>                                                                                                          
                                     <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">                                                
                                         <button class="btn btn-primary"  type="submit">Simpan</button>
                                     </div>
@@ -241,25 +247,26 @@ include('partials/global.php');
                    
                 });
 
-                $('#editClientModal').on('show.bs.modal', function(e) {
+                $('#editAdminModal').on('show.bs.modal', function(e) {
 
                     //get data-id attribute of the clicked element
-                    let id_client = $(e.relatedTarget).data('id-client');                     
-                    let client;               
+                    let id_admin = $(e.relatedTarget).data('id-admin');                     
+                    let admin;               
 
-                    $.get( "api/get_client.php", { id : id_client } )
+                    $.get( "api/get_admin.php", { id : id_admin } )
                         .done(function( data ) {
                             // alert( "Data Loaded: " + data );
                             let dataHasil = JSON.parse(data);
                             
                             if(dataHasil.result == 'success'){
-                                client = dataHasil.data;                                
+                                admin = dataHasil.data;                                
                                 // let changeForm = Date.parse(tglLahir).format('dd/mm/yyyy');
                                 // console.log(changeForm);
                                 // alert(penerima.card_id);
-                                $(e.currentTarget).find('input[name="id_client"]').val(client.id_client);
-                                $(e.currentTarget).find('input[name="nama"]').val(client.nama);
-                                $(e.currentTarget).find('input[name="username"]').val(client.username);                                           
+                                $(e.currentTarget).find('input[name="id_admin"]').val(admin.id_admin);
+                                $(e.currentTarget).find('input[name="nama"]').val(admin.nama);
+                                $(e.currentTarget).find('input[name="username"]').val(admin.username); 
+                                $(e.currentTarget).find('input[name="email"]').val(admin.email);                                          
                                 
                             }
                         });
