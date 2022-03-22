@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2022 at 06:55 AM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 7.4.14
+-- Waktu pembuatan: 22 Mar 2022 pada 07.32
+-- Versi server: 10.4.22-MariaDB
+-- Versi PHP: 8.0.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,28 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `client`
+-- Struktur dari tabel `admin`
+--
+
+CREATE TABLE `admin` (
+  `id_admin` int(11) NOT NULL,
+  `nama` text NOT NULL,
+  `username` text NOT NULL,
+  `email` text NOT NULL,
+  `password` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `nama`, `username`, `email`, `password`) VALUES
+(1, 'Makassar Robotics', 'mksrobotics', 'mksrobotics@gmail.com', '$2y$10$LQ4aGKD6Tb7EiviIB4W3.Ogg4XbfEvtVcdOXsq7eOYKg6nio7NbXi');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `client`
 --
 
 CREATE TABLE `client` (
@@ -35,7 +56,7 @@ CREATE TABLE `client` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `client`
+-- Dumping data untuk tabel `client`
 --
 
 INSERT INTO `client` (`id_client`, `nama`, `username`, `password`) VALUES
@@ -45,7 +66,7 @@ INSERT INTO `client` (`id_client`, `nama`, `username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `operator`
+-- Struktur dari tabel `operator`
 --
 
 CREATE TABLE `operator` (
@@ -56,7 +77,7 @@ CREATE TABLE `operator` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `operator`
+-- Dumping data untuk tabel `operator`
 --
 
 INSERT INTO `operator` (`id_operator`, `nama`, `no_hp`, `foto_identitas`) VALUES
@@ -65,7 +86,7 @@ INSERT INTO `operator` (`id_operator`, `nama`, `no_hp`, `foto_identitas`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `unit`
+-- Struktur dari tabel `unit`
 --
 
 CREATE TABLE `unit` (
@@ -79,7 +100,7 @@ CREATE TABLE `unit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `unit`
+-- Dumping data untuk tabel `unit`
 --
 
 INSERT INTO `unit` (`id_unit`, `no_id`, `model`, `serial_num`, `id_client`, `tahun`, `foto`) VALUES
@@ -93,41 +114,53 @@ INSERT INTO `unit` (`id_unit`, `no_id`, `model`, `serial_num`, `id_client`, `tah
 --
 
 --
--- Indexes for table `client`
+-- Indeks untuk tabel `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id_admin`);
+
+--
+-- Indeks untuk tabel `client`
 --
 ALTER TABLE `client`
   ADD PRIMARY KEY (`id_client`);
 
 --
--- Indexes for table `operator`
+-- Indeks untuk tabel `operator`
 --
 ALTER TABLE `operator`
   ADD PRIMARY KEY (`id_operator`);
 
 --
--- Indexes for table `unit`
+-- Indeks untuk tabel `unit`
 --
 ALTER TABLE `unit`
   ADD PRIMARY KEY (`id_unit`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `client`
+-- AUTO_INCREMENT untuk tabel `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `client`
 --
 ALTER TABLE `client`
   MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `operator`
+-- AUTO_INCREMENT untuk tabel `operator`
 --
 ALTER TABLE `operator`
   MODIFY `id_operator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `unit`
+-- AUTO_INCREMENT untuk tabel `unit`
 --
 ALTER TABLE `unit`
   MODIFY `id_unit` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
