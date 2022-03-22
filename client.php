@@ -30,7 +30,7 @@ include('partials/global.php');
                             <h1>Client</h1>
                         </div>
                         <div class="col-sm-6">
-                            <button type="button" class="btn btn-success btn-sm float-right"  data-toggle="modal" data-target="#clientModal">Tambah Client</button>    
+                            <button type="button" class="btn btn-success btn-sm float-right"  data-toggle="modal" data-target="#addClientModal">Tambah Client</button>    
                         </div>          
                     </div>
                 </div><!-- /.container-fluid -->
@@ -51,7 +51,7 @@ include('partials/global.php');
                                         <th>Nama Client</th>
                                         <th>Username</th>
                                         <th>Unit</th>
-                                        <th>Password</th>                                       
+                                        <th>Action</th>                                       
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -72,8 +72,10 @@ include('partials/global.php');
                                                     </a>
                                                 </td>';
                                                 echo '<td>
+                                                    <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#editClientModal" 
+                                                    data-id-client="'.$row['id_client'].'"><i class="fas fa-edit"></i> Edit Data</button>
                                                     <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#resetPassModal" 
-                                                    data-cliend-id="'.$row['id_client'].'"><i class="fas fa-sync"></i> Reset Password</button>
+                                                    data-id-client="'.$row['id_client'].'"><i class="fas fa-sync"></i> Reset Password</button>
                                                 </td>';
                                             echo '</tr>';                                
                                             }   
@@ -89,7 +91,7 @@ include('partials/global.php');
                 </section>
                 <!-- /.content -->
 
-                <div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -125,6 +127,36 @@ include('partials/global.php');
                         </div>
                     </div>
                 </div>  
+
+                <div class="modal fade" id="editClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Data Client</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">                                    
+                                <form action="access/edit_client.php" method="post"> 
+                                    <input type="hidden" name="id_client">                                       
+                                    <div class="form-group">
+                                        <label class="mb-1" for="namaTxt">Nama</label>
+                                        <input class="form-control py-4" id="namaTxt" type="text" name="nama"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="mb-1" for="usernameTxt">Username</label>
+                                        <input class="form-control py-4" id="usernameTxt" type="text" name="username"/>
+                                    </div>                                                                                                                   
+                                    <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">                                                
+                                        <button class="btn btn-primary"  type="submit">Simpan</button>
+                                    </div>
+                                </form>                                    
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div> 
 
                 <div class="modal fade" id="addUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -203,6 +235,31 @@ include('partials/global.php');
                     $(e.currentTarget).find('input[name="nama_client"]').val(nama); 
                    
                 });
+
+                $('#editClientModal').on('show.bs.modal', function(e) {
+
+                    //get data-id attribute of the clicked element
+                    let id_client = $(e.relatedTarget).data('id-client');                     
+                    let client;               
+
+                    $.get( "api/get_client.php", { id : id_client } )
+                        .done(function( data ) {
+                            // alert( "Data Loaded: " + data );
+                            let dataHasil = JSON.parse(data);
+                            
+                            if(dataHasil.result == 'success'){
+                                client = dataHasil.data;                                
+                                // let changeForm = Date.parse(tglLahir).format('dd/mm/yyyy');
+                                // console.log(changeForm);
+                                // alert(penerima.card_id);
+                                $(e.currentTarget).find('input[name="id_client"]').val(client.id_client);
+                                $(e.currentTarget).find('input[name="nama"]').val(client.nama);
+                                $(e.currentTarget).find('input[name="username"]').val(client.username);                                           
+                                
+                            }
+                        });
+
+                    });
             } );
 
         </script>
