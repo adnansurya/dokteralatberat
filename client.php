@@ -51,6 +51,7 @@ include('partials/global.php');
                                         <th>Nama Client</th>
                                         <th>Username</th>
                                         <th>Unit</th>
+                                        <th>Admin</th>
                                         <th>Action</th>                                       
                                     </tr>
                                 </thead>
@@ -71,6 +72,7 @@ include('partials/global.php');
                                                         <button type="button" class="btn btn-info btn-sm m-1"><i class="fas fa-search"></i> Lihat Semua</button>
                                                     </a>
                                                 </td>';
+                                                echo '<td>-</td>';
                                                 echo '<td>
                                                     <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#editClientModal" 
                                                     data-id-client="'.$row['id_client'].'"><i class="fas fa-edit"></i> Edit Data</button>
