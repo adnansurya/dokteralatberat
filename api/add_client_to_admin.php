@@ -15,6 +15,22 @@ include '../access/db_access.php';
             echo "BERHASIL";
             $rowcount=mysqli_num_rows($result);
             echo "The total number of rows are: ".$rowcount; 
+            if($rowcount > 0){
+                echo "Sudah ada";
+            }else{
+                $sql = "INSERT INTO 
+                link_admin_client (id_admin, id_client) 
+                VALUES ('".$_POST['id_client']."','".$_POST['id_admin']."')";
+        
+                
+            
+                if(!mysqli_query($conn, $sql)){
+                    echo "ERROR";
+                }else{
+                    echo "BERHASIL INPUT";
+                    // header("location: ../permintaan.php");                    
+                }       
+            }
             // header("location: ../permintaan.php");
             // echo "<script> window.location.href = '../admin.php'; </script>";
         }else{
@@ -23,17 +39,7 @@ include '../access/db_access.php';
         }  
         
         //Pake ajax, update setiap di klik
-        $sql = "UPDATE admin SET username='".$_POST['username']."', nama='".$_POST['nama']."', email='".$_POST['email']."'        
-        WHERE id_admin='".$_POST['id_admin']."'"; 
         
-       
-        if(!mysqli_query($conn, $sql)){
-            echo "ERROR";
-        }else{
-            echo "BERHASIL";
-            // header("location: ../permintaan.php");
-            echo "<script> window.location.href = '../admin.php'; </script>";
-        }       
      }else{
          echo 'Parameter Tidak Lengkap';
      }

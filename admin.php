@@ -184,19 +184,27 @@ include('partials/global.php');
                                     <input type="hidden" name="id_admin">   
                                     <div class="form-group">
                                         <label class="mb-1" for="nama_adminTxt">Admin</label>
-                                        <input class="form-control py-4" id="nama_adminTxt" type="text" name="nama_admin"/>
-                                    </div>                                   
-                                    <div class="form-group">
-                                        <label class="mb-1" for="clientTxt">Client</label>
-                                        <select id="clientSel" class="selectpicker form-control" data-live-search="true" name="id_client[]" multiple>
-                                            <?php
-                                                 $load = mysqli_query($conn, "SELECT * FROM client");   
-                                                 while ($row = mysqli_fetch_array($load)){ 
-                                                    echo '<option value="'.$row['id_client'].'">'.$row['nama'].'</option>';
-                                                 }
-                                            ?>                                            
-                                        </select>
-                                    </div>                                                                           
+                                        <input class="form-control py-4" id="nama_adminTxt" type="text" name="nama_admin" disabled/>
+                                    </div>          
+                                    <label class="mb-1" for="clientTxt">Client</label>                         
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <div class="form-group">
+                                              
+                                                <select id="clientSel" class="selectpicker form-control" data-live-search="true" name="id_client[]">
+                                                    <?php
+                                                        $load = mysqli_query($conn, "SELECT * FROM client");   
+                                                        while ($row = mysqli_fetch_array($load)){ 
+                                                            echo '<option value="'.$row['id_client'].'">'.$row['nama'].'</option>';
+                                                        }
+                                                    ?>                                            
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button id="addClientBtn" type="button" class="btn btn-success btn-block float-right align-baseline">Tambah</button>
+                                        </div>
+                                    </div>
                                     <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">                                                
                                         <button class="btn btn-primary"  type="submit">Simpan</button>
                                     </div>
@@ -221,7 +229,8 @@ include('partials/global.php');
 
                 
             $(document).ready(function() { 
-                $('.selectpicker').selectpicker();           
+                $('.selectpicker').selectpicker();    
+               
                 $('#addUnitModal').on('show.bs.modal', function(e) {
 
                     //get data-id attribute of the clicked element
@@ -258,21 +267,29 @@ include('partials/global.php');
                     });
 
                 });
-
+                
+               
                 $('#addClientModal').on('show.bs.modal', function(e) {
-
-                    //get data-id attribute of the clicked element
                     let id_admin = $(e.relatedTarget).data('id-admin');     
                     let nama = $(e.relatedTarget).data('nama-admin');  
                     $(e.currentTarget).find('input[name="id_admin"]').val(id_admin);
                     $(e.currentTarget).find('input[name="nama_admin"]').val(nama);                    
                     let admin; 
+
+                    $('#addClientBtn').click(function(){
+                        let id_client = $('#clientSel').val();
+                        // alert();
+                        $.post( "api/add_client_to_admin.php", { id_admin : id_admin, id_client : id_client } )
+                        .done(function( data ) {
+                            alert(data);
+                        });
+                    });
                     
-                    $('#clientSel').change(function(){
-                        // alert($(this).val());
-                        var selectedCountry = $(this).children("option:selected").val();
-                        alert("You have selected the country - " + selectedCountry);
-                    })
+                    // $('#clientSel').change(function(){
+                    //     // alert($(this).val());
+                    //     var selectedCountry = $(this).children("option:selected").val();
+                    //     alert("You have selected the country - " + selectedCountry);
+                    // })
 
                     // $.get( "api/get_admin.php", { id : id_admin } )
                     //     .done(function( data ) {
@@ -293,6 +310,8 @@ include('partials/global.php');
                     // });
 
                 });
+
+              
             } );
 
         </script>
