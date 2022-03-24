@@ -9,7 +9,7 @@ $resObj -> result = "";
 
     if(isset($_GET['id'])){
 
-        $sql = "SELECT client.* 
+        $sql = "SELECT link_admin_client.id_link, client.* 
         FROM link_admin_client 
         LEFT JOIN client
         ON link_admin_client.id_client=client.id_client 

@@ -69,11 +69,9 @@ include('partials/global.php');
                                                 echo '<td>'.$row['username'].'</td>';
                                                 echo '<td>'.$row['email'].'</td>';
                                                 echo '<td>
-                                                    <button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#addClientModal" 
-                                                    data-id-admin="'.$row['id_admin'].'" data-nama-admin="'.$row['nama'].'"><i class="fas fa-plus"></i> Tambah</button>
-                                                    <a href="unit.php?client='.$row['username'].'">
-                                                        <button type="button" class="btn btn-info btn-sm m-1"><i class="fas fa-search"></i> Lihat Semua</button>
-                                                    </a>
+                                                    <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#addClientModal" 
+                                                    data-id-admin="'.$row['id_admin'].'" data-nama-admin="'.$row['nama'].'"><i class="fas fa-search"></i> Lihat Semua</button>
+                                                   
                                                 </td>';
                                                 echo '<td>
                                                     <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#editAdminModal" 
@@ -174,24 +172,37 @@ include('partials/global.php');
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Tambah Client Baru</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">List Client</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">                                    
+                            <div class="modal-body">                                                                   
                                 <form action="access/add_client_to_admin.php" method="post"> 
                                     <input type="hidden" name="id_admin">   
                                     <div class="form-group">
                                         <label class="mb-1" for="nama_adminTxt">Admin</label>
                                         <input class="form-control py-4" id="nama_adminTxt" type="text" name="nama_admin" disabled/>
-                                    </div>          
-                                    <label class="mb-1" for="clientTxt">Client</label>                         
+                                    </div>   
+                                    <div class="form-group">
+                                        <label class="mb-1" for="list-group">Sedang dihandle:</label> 
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="card">                          
+                                                                
+                                                    <ul class="list-group list-group-flush">
+                                                        <div id="clientDiv"></div>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>       
+                                    <label class="mb-1" for="clientTxt">Client Baru</label>                         
                                     <div class="row">
                                         <div class="col-sm-9">
                                             <div class="form-group">
                                               
-                                                <select id="clientSel" class="selectpicker form-control" data-live-search="true" name="id_client[]">
+                                                <select id="clientSel" class="selectpicker form-control" data-live-search="true" name="id_client[]" title="Cari/Pilih Client">
                                                     <?php
                                                         $load = mysqli_query($conn, "SELECT * FROM client");   
                                                         while ($row = mysqli_fetch_array($load)){ 
@@ -202,17 +213,13 @@ include('partials/global.php');
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
-                                            <button id="addClientBtn" type="button" class="btn btn-success btn-block float-right align-baseline">Tambah</button>
+                                            <button id="addClientBtn" type="button" class="btn btn-success btn-block float-right align-baseline">Tambahkan</button>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div id="clientDiv"></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">                                                
-                                        <button class="btn btn-primary"  type="submit">Simpan</button>
-                                    </div>
+                                    
+                                    
+                                       
+                                                                  
                                 </form>                                    
                             </div>
                         
@@ -232,7 +239,39 @@ include('partials/global.php');
         <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
         <script type="text/javascript">
 
-                
+            function loadClients(id_admin){
+                $('#clientDiv').html('');
+                $.get( "api/get_admin_link.php", { id : id_admin } )
+                    .done(function( data ) {
+                        // alert( "Data Loaded: " + data );
+                        console.log( "Data Loaded: " + data );
+                    let dataHasil = JSON.parse(data);
+                    // alert(data);
+                    
+                    
+                    if(dataHasil.result == 'success'){
+                        let clients = dataHasil.data; 
+
+                        clients.forEach(client =>{
+                            $('#clientDiv').append(`
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <p>`+client.nama+`</p>                                                   
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <a href=api/remove_admin_link.php?id_link="`+client.id_link+`" class="btn btn-danger btn-sm float-right">
+                                                Hapus
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>                                                                                           
+                            `);
+                            
+                        });                                                                                                                              
+                    }
+                });
+            }
             $(document).ready(function() { 
                 $('.selectpicker').selectpicker();    
                
@@ -278,49 +317,26 @@ include('partials/global.php');
                     let id_admin = $(e.relatedTarget).data('id-admin');     
                     let nama = $(e.relatedTarget).data('nama-admin');  
                     $(e.currentTarget).find('input[name="id_admin"]').val(id_admin);
-                    $(e.currentTarget).find('input[name="nama_admin"]').val(nama);                                        
+                    $(e.currentTarget).find('input[name="nama_admin"]').val(nama); 
+
+                    
+
+                                                        
 
                     $('#addClientBtn').click(function(){
                         let id_client = $('#clientSel').val();
                         // alert();
-                        $.post( "api/add_client_to_admin.php", { id_admin : id_admin, id_client : id_client } )
-                        .done(function( data ) {
-                            alert(data);
+                        $.post( "api/add_admin_link.php", { id_admin : id_admin, id_client : id_client } )
+                        .done(function( data ) {                            
+                            loadClients(id_admin);
                         });
+                       
                     });
+
+                    loadClients(id_admin);
+                });     
+                   
                     
-                    // $('#clientSel').change(function(){
-                    //     // alert($(this).val());
-                    //     var selectedCountry = $(this).children("option:selected").val();
-                    //     alert("You have selected the country - " + selectedCountry);
-                    // })
-
-                    $.get( "api/get_admin_link.php", { id : id_admin } )
-                        .done(function( data ) {
-                            alert( "Data Loaded: " + data );
-                            let dataHasil = JSON.parse(data);
-                            // alert(data);
-                            
-                            
-                            if(dataHasil.result == 'success'){
-                                let clients = dataHasil.data; 
-
-                                for(const client in clients){
-                                    
-                                }
-                                                               
-                                // let changeForm = Date.parse(tglLahir).format('dd/mm/yyyy');
-                                // console.log(changeForm);
-                                // alert(penerima.card_id);
-                                // $(e.currentTarget).find('input[name="id_admin"]').val(admin.id_admin);
-                                // $(e.currentTarget).find('input[name="nama"]').val(admin.nama);
-                                // $(e.currentTarget).find('input[name="username"]').val(admin.username); 
-                                // $(e.currentTarget).find('input[name="email"]').val(admin.email);                                          
-                                
-                            }
-                    });
-
-                });
 
               
             } );
