@@ -20,7 +20,7 @@ include '../access/db_access.php';
             }else{
                 $sql = "INSERT INTO 
                 link_admin_client (id_admin, id_client) 
-                VALUES ('".$_POST['id_client']."','".$_POST['id_admin']."')";
+                VALUES ('".$_POST['id_admin']."','".$_POST['id_client']."')";
         
                 
             

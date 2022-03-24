@@ -205,6 +205,11 @@ include('partials/global.php');
                                             <button id="addClientBtn" type="button" class="btn btn-success btn-block float-right align-baseline">Tambah</button>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div id="clientDiv"></div>
+                                        </div>
+                                    </div>
                                     <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">                                                
                                         <button class="btn btn-primary"  type="submit">Simpan</button>
                                     </div>
@@ -273,8 +278,7 @@ include('partials/global.php');
                     let id_admin = $(e.relatedTarget).data('id-admin');     
                     let nama = $(e.relatedTarget).data('nama-admin');  
                     $(e.currentTarget).find('input[name="id_admin"]').val(id_admin);
-                    $(e.currentTarget).find('input[name="nama_admin"]').val(nama);                    
-                    let admin; 
+                    $(e.currentTarget).find('input[name="nama_admin"]').val(nama);                                        
 
                     $('#addClientBtn').click(function(){
                         let id_client = $('#clientSel').val();
@@ -291,23 +295,26 @@ include('partials/global.php');
                     //     alert("You have selected the country - " + selectedCountry);
                     // })
 
-                    // $.get( "api/get_admin.php", { id : id_admin } )
-                    //     .done(function( data ) {
-                    //         // alert( "Data Loaded: " + data );
-                    //         let dataHasil = JSON.parse(data);
+                    $.get( "api/get_admin_link.php", { id : id_admin } )
+                        .done(function( data ) {
+                            alert( "Data Loaded: " + data );
+                            let dataHasil = JSON.parse(data);
+                            alert(data);
                             
-                    //         if(dataHasil.result == 'success'){
-                    //             admin = dataHasil.data;                                
-                    //             // let changeForm = Date.parse(tglLahir).format('dd/mm/yyyy');
-                    //             // console.log(changeForm);
-                    //             // alert(penerima.card_id);
-                    //             $(e.currentTarget).find('input[name="id_admin"]').val(admin.id_admin);
-                    //             $(e.currentTarget).find('input[name="nama"]').val(admin.nama);
-                    //             $(e.currentTarget).find('input[name="username"]').val(admin.username); 
-                    //             $(e.currentTarget).find('input[name="email"]').val(admin.email);                                          
+                            
+                            if(dataHasil.result == 'success'){
+                                clients = dataHasil.data; 
+                                                               
+                                // let changeForm = Date.parse(tglLahir).format('dd/mm/yyyy');
+                                // console.log(changeForm);
+                                // alert(penerima.card_id);
+                                // $(e.currentTarget).find('input[name="id_admin"]').val(admin.id_admin);
+                                // $(e.currentTarget).find('input[name="nama"]').val(admin.nama);
+                                // $(e.currentTarget).find('input[name="username"]').val(admin.username); 
+                                // $(e.currentTarget).find('input[name="email"]').val(admin.email);                                          
                                 
-                    //         }
-                    // });
+                            }
+                    });
 
                 });
 
