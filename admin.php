@@ -299,11 +299,15 @@ include('partials/global.php');
                         .done(function( data ) {
                             alert( "Data Loaded: " + data );
                             let dataHasil = JSON.parse(data);
-                            alert(data);
+                            // alert(data);
                             
                             
                             if(dataHasil.result == 'success'){
-                                clients = dataHasil.data; 
+                                let clients = dataHasil.data; 
+
+                                for(const client in clients){
+                                    
+                                }
                                                                
                                 // let changeForm = Date.parse(tglLahir).format('dd/mm/yyyy');
                                 // console.log(changeForm);
