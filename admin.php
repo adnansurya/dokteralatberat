@@ -70,8 +70,7 @@ include('partials/global.php');
                                                 echo '<td>'.$row['email'].'</td>';
                                                 echo '<td>
                                                     <button type="button" class="btn btn-primary btn-sm m-1" data-toggle="modal" data-target="#addClientModal" 
-                                                    data-id-admin="'.$row['id_admin'].'" data-nama-admin="'.$row['nama'].'"><i class="fas fa-search"></i> Lihat Semua</button>
-                                                   
+                                                    data-id-admin="'.$row['id_admin'].'" data-nama-admin="'.$row['nama'].'"><i class="fas fa-search"></i> Lihat Semua</button>                                                   
                                                 </td>';
                                                 echo '<td>
                                                     <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#editAdminModal" 
@@ -178,7 +177,7 @@ include('partials/global.php');
                                 </button>
                             </div>
                             <div class="modal-body">                                                                   
-                                <form action="access/add_client_to_admin.php" method="post"> 
+                                <form action="#" method="post"> 
                                     <input type="hidden" name="id_admin">   
                                     <div class="form-group">
                                         <label class="mb-1" for="nama_adminTxt">Admin</label>
@@ -241,10 +240,10 @@ include('partials/global.php');
 
             function loadClients(id_admin){
                 $('#clientDiv').html('');
-                $.get( "api/get_admin_link.php", { id : id_admin } )
+                $.get( "api/get_admin_client.php", { id_admin : id_admin } )
                     .done(function( data ) {
                         // alert( "Data Loaded: " + data );
-                        console.log( "Data Loaded: " + data );
+                        // console.log( "Data Loaded: " + data );
                     let dataHasil = JSON.parse(data);
                     // alert(data);
                     
@@ -260,7 +259,7 @@ include('partials/global.php');
                                             <p>`+client.nama+`</p>                                                   
                                         </div>
                                         <div class="col-sm-3">
-                                            <a href=api/remove_admin_link.php?id_link="`+client.id_link+`" class="btn btn-danger btn-sm float-right">
+                                            <a href=api/remove_admin_client.php?id_link="`+client.id_link+`" class="btn btn-danger btn-sm float-right">
                                                 Hapus
                                             </a>
                                         </div>
@@ -326,7 +325,7 @@ include('partials/global.php');
                     $('#addClientBtn').click(function(){
                         let id_client = $('#clientSel').val();
                         // alert();
-                        $.post( "api/add_admin_link.php", { id_admin : id_admin, id_client : id_client } )
+                        $.post( "api/add_admin_client.php", { id_admin : id_admin, id_client : id_client } )
                         .done(function( data ) {                            
                             loadClients(id_admin);
                         });

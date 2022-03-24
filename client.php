@@ -72,7 +72,10 @@ include('partials/global.php');
                                                         <button type="button" class="btn btn-primary btn-sm m-1"><i class="fas fa-search"></i> Lihat Semua</button>
                                                     </a>
                                                 </td>';
-                                                echo '<td>-</td>';
+                                                echo '<td>
+                                                    <button type="button" class="btn btn-primary btn-sm m-1" data-toggle="modal" data-target="#addAdminModal" 
+                                                    data-id-client="'.$row['id_client'].'" data-nama-client="'.$row['nama'].'"><i class="fas fa-search"></i> Lihat Semua</button>
+                                                </td>';
                                                 echo '<td>
                                                     <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#editClientModal" 
                                                     data-id-client="'.$row['id_client'].'"><i class="fas fa-edit"></i> Edit Data</button>
@@ -213,7 +216,60 @@ include('partials/global.php');
                         </div>
                     </div>
                 </div>  
-
+                <div class="modal fade" id="addAdminModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">List Admin</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">                                                                   
+                                <form action="#" method="post"> 
+                                    <input type="hidden" name="id_client">   
+                                    <div class="form-group">
+                                        <label class="mb-1" for="nama_clientTxt">Client</label>
+                                        <input class="form-control py-4" id="nama_clientTxt" type="text" name="nama_client" disabled/>
+                                    </div>   
+                                    <div class="form-group">
+                                        <label class="mb-1" for="list-group">Dihandle oleh:</label> 
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="card">                          
+                                                                
+                                                    <ul class="list-group list-group-flush">
+                                                        <div id="adminDiv"></div>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>       
+                                    <!-- <label class="mb-1" for="clientTxt">Admin Baru</label>                          -->
+                                    <!-- <div class="row">
+                                        <div class="col-sm-9">
+                                            <div class="form-group">
+                                              
+                                                <select id="adminSel" class="selectpicker form-control" data-live-search="true" name="id_admin[]" title="Cari/Pilih Admin"> -->
+                                                    <?php
+                                                        // $load = mysqli_query($conn, "SELECT * FROM admin");   
+                                                        // while ($row = mysqli_fetch_array($load)){ 
+                                                        //     echo '<option value="'.$row['id_admin'].'">'.$row['nama'].'</option>';
+                                                        // }
+                                                    ?>                                            
+                                                <!-- </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button id="addAdminBtn" type="button" class="btn btn-success btn-block float-right align-baseline">Tambahkan</button>
+                                        </div>
+                                    </div>                                  -->
+                                </form>                                    
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>  
 
             </div>
             <!-- /.content-wrapper -->
@@ -224,6 +280,35 @@ include('partials/global.php');
         <?php include('partials/scripts.php'); ?>
         <?php include('partials/datatableJs.php'); ?>
         <script type="text/javascript">
+
+            function loadAdmins(id_client){
+                $('#adminDiv').html('');
+                $.get( "api/get_admin_client.php", { id_client : id_client } )
+                    .done(function( data ) {
+                        // alert( "Data Loaded: " + data );
+                        console.log( "Data Loaded: " + data );
+                    let dataHasil = JSON.parse(data);
+                    // alert(data);
+                    
+                    
+                    if(dataHasil.result == 'success'){
+                        let admins = dataHasil.data; 
+
+                        admins.forEach(admin =>{
+                            $('#adminDiv').append(`
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <p>`+admin.nama+`</p>                                                   
+                                        </div>                                
+                                    </div>
+                                </li>                                                                                           
+                            `);
+                            
+                        });                                                                                                                              
+                    }
+                });
+            }
 
                 
             $(document).ready(function() {            
@@ -261,7 +346,31 @@ include('partials/global.php');
                             }
                         });
 
+                });
+                
+                $('#addAdminModal').on('show.bs.modal', function(e) {
+                    let id_client = $(e.relatedTarget).data('id-client');     
+                    let nama = $(e.relatedTarget).data('nama-client');  
+                    $(e.currentTarget).find('input[name="id_client"]').val(id_client);
+                    $(e.currentTarget).find('input[name="nama_client"]').val(nama); 
+
+                    
+
+                                                        
+
+                    $('#addAdminBtn').click(function(){
+                        let id_admin = $('#adminSel').val();
+                        // alert();
+                        $.post( "api/add_admin_client.php", { id_admin : id_admin, id_client : id_client } )
+                        .done(function( data ) {                            
+                            loadAdmins(id_client);
+                        });
+                       
                     });
+
+                    loadAdmins(id_client);
+                }); 
+
             } );
 
         </script>

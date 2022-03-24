@@ -28,7 +28,10 @@ include '../access/db_access.php';
                     echo "ERROR";
                 }else{
                     echo "BERHASIL INPUT";
-                    // header("location: ../permintaan.php");                    
+                    die();
+                    
+                    header("location: ../dashboard.php"); 
+                                    
                 }       
             }
             // header("location: ../permintaan.php");
