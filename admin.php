@@ -11,6 +11,7 @@ include('partials/global.php');
 <html lang="en">
     <head>
         <?php include('partials/head.php'); ?>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
         
         <title><?php echo $webname; ?> - Admin</title>        
     </head>
@@ -68,8 +69,8 @@ include('partials/global.php');
                                                 echo '<td>'.$row['username'].'</td>';
                                                 echo '<td>'.$row['email'].'</td>';
                                                 echo '<td>
-                                                    <button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#addUnitModal" 
-                                                    data-id-client="'.$row['id_admin'].'" data-nama-client="'.$row['nama'].'"><i class="fas fa-plus"></i> Tambah</button>
+                                                    <button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#addClientModal" 
+                                                    data-id-admin="'.$row['id_admin'].'" data-nama-admin="'.$row['nama'].'"><i class="fas fa-plus"></i> Tambah</button>
                                                     <a href="unit.php?client='.$row['username'].'">
                                                         <button type="button" class="btn btn-info btn-sm m-1"><i class="fas fa-search"></i> Lihat Semua</button>
                                                     </a>
@@ -169,50 +170,33 @@ include('partials/global.php');
                     </div>
                 </div> 
 
-                <div class="modal fade" id="addUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Tambah Unit Baru</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Tambah Client Baru</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">                                    
-                                <form action="access/add_unit.php" method="post"> 
-                                    <input type="hidden" name="id_client">                                       
+                                <form action="access/add_client_to_admin.php" method="post"> 
+                                    <input type="hidden" name="id_admin">   
                                     <div class="form-group">
-                                        <label class="mb-1" for="no_idTxt">No. ID</label>
-                                        <input class="form-control py-4" id="no_idTxt" type="text" name="no_id"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="mb-1" for="modelTxt">Model</label>
-                                        <input class="form-control py-4" id="modelTxt" type="text" name="model"/>
-                                    </div>  
-                                    <div class="form-group">
-                                        <label class="mb-1" for="serial_numTxt">Serial Number</label>
-                                        <input class="form-control py-4" id="serial_numTxt" type="text" name="serial_num"/>
-                                    </div>
+                                        <label class="mb-1" for="nama_adminTxt">Admin</label>
+                                        <input class="form-control py-4" id="nama_adminTxt" type="text" name="nama_admin"/>
+                                    </div>                                   
                                     <div class="form-group">
                                         <label class="mb-1" for="clientTxt">Client</label>
-                                        <input class="form-control py-4" id="clientTxt" type="text" name="nama_client" disabled/>
-                                    </div> 
-                                    <div class="form-group">
-                                        <label class="mb-1" for="tahunTxt">Tahun</label>
-                                        <input class="form-control py-4" id="tahunTxt" type="number" name="tahun"/>
-                                    </div> 
-                                    <div class="form-group">
-                                        <label  class="mb-1" for="exampleInputFile">Foto</label>
-                                        <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="exampleInputFile">
-                                            <label class="custom-file-label" for="exampleInputFile">Pilih file</label>
-                                        </div>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">Upload</span>
-                                        </div>
-                                        </div>
-                                    </div>                                           
+                                        <select id="clientSel" class="selectpicker form-control" data-live-search="true" name="id_client[]" multiple>
+                                            <?php
+                                                 $load = mysqli_query($conn, "SELECT * FROM client");   
+                                                 while ($row = mysqli_fetch_array($load)){ 
+                                                    echo '<option value="'.$row['id_client'].'">'.$row['nama'].'</option>';
+                                                 }
+                                            ?>                                            
+                                        </select>
+                                    </div>                                                                           
                                     <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">                                                
                                         <button class="btn btn-primary"  type="submit">Simpan</button>
                                     </div>
@@ -232,10 +216,12 @@ include('partials/global.php');
         </div>
         <?php include('partials/scripts.php'); ?>
         <?php include('partials/datatableJs.php'); ?>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
         <script type="text/javascript">
 
                 
-            $(document).ready(function() {            
+            $(document).ready(function() { 
+                $('.selectpicker').selectpicker();           
                 $('#addUnitModal').on('show.bs.modal', function(e) {
 
                     //get data-id attribute of the clicked element
@@ -269,9 +255,44 @@ include('partials/global.php');
                                 $(e.currentTarget).find('input[name="email"]').val(admin.email);                                          
                                 
                             }
-                        });
-
                     });
+
+                });
+
+                $('#addClientModal').on('show.bs.modal', function(e) {
+
+                    //get data-id attribute of the clicked element
+                    let id_admin = $(e.relatedTarget).data('id-admin');     
+                    let nama = $(e.relatedTarget).data('nama-admin');  
+                    $(e.currentTarget).find('input[name="id_admin"]').val(id_admin);
+                    $(e.currentTarget).find('input[name="nama_admin"]').val(nama);                    
+                    let admin; 
+                    
+                    $('#clientSel').change(function(){
+                        // alert($(this).val());
+                        var selectedCountry = $(this).children("option:selected").val();
+                        alert("You have selected the country - " + selectedCountry);
+                    })
+
+                    // $.get( "api/get_admin.php", { id : id_admin } )
+                    //     .done(function( data ) {
+                    //         // alert( "Data Loaded: " + data );
+                    //         let dataHasil = JSON.parse(data);
+                            
+                    //         if(dataHasil.result == 'success'){
+                    //             admin = dataHasil.data;                                
+                    //             // let changeForm = Date.parse(tglLahir).format('dd/mm/yyyy');
+                    //             // console.log(changeForm);
+                    //             // alert(penerima.card_id);
+                    //             $(e.currentTarget).find('input[name="id_admin"]').val(admin.id_admin);
+                    //             $(e.currentTarget).find('input[name="nama"]').val(admin.nama);
+                    //             $(e.currentTarget).find('input[name="username"]').val(admin.username); 
+                    //             $(e.currentTarget).find('input[name="email"]').val(admin.email);                                          
+                                
+                    //         }
+                    // });
+
+                });
             } );
 
         </script>
