@@ -69,7 +69,7 @@ include('partials/global.php');
                                                 echo '<td>'.$row['username'].'</td>';
                                                 echo '<td>'.$row['email'].'</td>';
                                                 echo '<td>
-                                                    <button type="button" class="btn btn-info btn-sm m-1" data-toggle="modal" data-target="#addClientModal" 
+                                                    <button type="button" class="btn btn-primary btn-sm m-1" data-toggle="modal" data-target="#addClientModal" 
                                                     data-id-admin="'.$row['id_admin'].'" data-nama-admin="'.$row['nama'].'"><i class="fas fa-search"></i> Lihat Semua</button>
                                                    
                                                 </td>';

@@ -69,7 +69,7 @@ include('partials/global.php');
                                                     <button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#addUnitModal" 
                                                     data-id-client="'.$row['id_client'].'" data-nama-client="'.$row['nama'].'"><i class="fas fa-plus"></i> Tambah</button>
                                                     <a href="unit.php?client='.$row['username'].'">
-                                                        <button type="button" class="btn btn-info btn-sm m-1"><i class="fas fa-search"></i> Lihat Semua</button>
+                                                        <button type="button" class="btn btn-primary btn-sm m-1"><i class="fas fa-search"></i> Lihat Semua</button>
                                                     </a>
                                                 </td>';
                                                 echo '<td>-</td>';
