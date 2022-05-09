@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 22 Mar 2022 pada 07.32
--- Versi server: 10.4.22-MariaDB
--- Versi PHP: 8.0.14
+-- Waktu pembuatan: 09 Bulan Mei 2022 pada 17.37
+-- Versi server: 10.4.17-MariaDB
+-- Versi PHP: 7.4.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,7 +40,29 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id_admin`, `nama`, `username`, `email`, `password`) VALUES
-(1, 'Makassar Robotics', 'mksrobotics', 'mksrobotics@gmail.com', '$2y$10$LQ4aGKD6Tb7EiviIB4W3.Ogg4XbfEvtVcdOXsq7eOYKg6nio7NbXi');
+(1, 'Hologram Makassar', 'hologram_mks', 'hologram.mks@gmail.com', '$2y$10$LQ4aGKD6Tb7EiviIB4W3.Ogg4XbfEvtVcdOXsq7eOYKg6nio7NbXi'),
+(2, 'Anonymous', 'anonym', 'anonym@gmail.com', '$2y$10$h7VpWvj65EsorbINr0vJGem5MR7FGx8C3/D6sHuF/VNjPoJApGMim');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `checklist_harian`
+--
+
+CREATE TABLE `checklist_harian` (
+  `id_checklist` int(11) NOT NULL,
+  `id_client` int(11) NOT NULL,
+  `id_unit` int(11) NOT NULL,
+  `id_operator` int(11) NOT NULL,
+  `tanggal` date NOT NULL,
+  `stat_operasi` text NOT NULL,
+  `lokasi` text NOT NULL,
+  `jam_start` int(11) NOT NULL,
+  `jam_stop` int(11) NOT NULL,
+  `durasi` int(11) NOT NULL,
+  `jasa` text NOT NULL,
+  `sparepart` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -66,6 +88,27 @@ INSERT INTO `client` (`id_client`, `nama`, `username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `link_admin_client`
+--
+
+CREATE TABLE `link_admin_client` (
+  `id_link` int(11) NOT NULL,
+  `id_admin` int(11) NOT NULL,
+  `id_client` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `link_admin_client`
+--
+
+INSERT INTO `link_admin_client` (`id_link`, `id_admin`, `id_client`) VALUES
+(3, 2, 1),
+(4, 2, 2),
+(6, 1, 2);
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `operator`
 --
 
@@ -81,7 +124,8 @@ CREATE TABLE `operator` (
 --
 
 INSERT INTO `operator` (`id_operator`, `nama`, `no_hp`, `foto_identitas`) VALUES
-(1, 'Muhammad Adnan', '081244047984', '-');
+(1, 'Muhammad Adnan', '081244047984', '-'),
+(2, 'Zagi', '083247587638263', '-');
 
 -- --------------------------------------------------------
 
@@ -120,10 +164,22 @@ ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`);
 
 --
+-- Indeks untuk tabel `checklist_harian`
+--
+ALTER TABLE `checklist_harian`
+  ADD PRIMARY KEY (`id_checklist`);
+
+--
 -- Indeks untuk tabel `client`
 --
 ALTER TABLE `client`
   ADD PRIMARY KEY (`id_client`);
+
+--
+-- Indeks untuk tabel `link_admin_client`
+--
+ALTER TABLE `link_admin_client`
+  ADD PRIMARY KEY (`id_link`);
 
 --
 -- Indeks untuk tabel `operator`
@@ -145,7 +201,13 @@ ALTER TABLE `unit`
 -- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT untuk tabel `checklist_harian`
+--
+ALTER TABLE `checklist_harian`
+  MODIFY `id_checklist` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `client`
@@ -154,10 +216,16 @@ ALTER TABLE `client`
   MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT untuk tabel `link_admin_client`
+--
+ALTER TABLE `link_admin_client`
+  MODIFY `id_link` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT untuk tabel `operator`
 --
 ALTER TABLE `operator`
-  MODIFY `id_operator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_operator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `unit`
