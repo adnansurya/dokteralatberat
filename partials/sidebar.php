@@ -50,9 +50,9 @@
           </li>
           <li class="nav-header">ADMIN</li>
           <li class="nav-item">
-            <a href="daily_check.php" class="nav-link">
+            <a href="checklist_harian.php" class="nav-link">
               <i class="f fas fa-tachometer-alt nav-icon"></i>          
-              <p>Daily Check</p>
+              <p>Checklist Harian</p>
             </a>
           </li>
           <li class="nav-header">CLIENT</li>

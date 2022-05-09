@@ -13,7 +13,7 @@ include('partials/global.php');
         <?php include('partials/head.php'); ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
         
-        <title><?php echo $webname; ?> - Input Data</title>        
+        <title><?php echo $webname; ?> - Checklist Harian</title>        
     </head>
     <body>
         <div class="wrapper">
@@ -28,7 +28,7 @@ include('partials/global.php');
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Daily Check</h1>
+                            <h1>Checklist Harian</h1>
                         </div>                             
                     </div>
                 </div><!-- /.container-fluid -->
@@ -59,6 +59,18 @@ include('partials/global.php');
                                 <label class="mb-1" for="id_unit">Unit</label>
                                 <select class="form-control" name="id_unit" title="Pilih Unit" id="unitSel">
                                     <option value="0" disabled selected>Pilih Unit</option>                                                                                                                                        
+                                </select>
+                            </div> 
+                            <div class="form-group">
+                                <label class="mb-1" for="clientTxt">Operator</label>
+                                <select class="selectpicker form-control" data-live-search="true" name="id_operator" id="operatorSel" title="Pilih Operator">
+                                    <?php
+                                    include 'access/db_access.php';
+                                        $load = mysqli_query($conn, "SELECT * FROM operator");   
+                                        while ($row = mysqli_fetch_array($load)){ 
+                                            echo '<option value="'.$row['id_operator'].'">'.$row['nama'].'</option>';
+                                        }
+                                    ?>                                            
                                 </select>
                             </div> 
                             <div class="row">
@@ -185,6 +197,7 @@ include('partials/global.php');
                         $('#totalJamTxt').val(totalJam);
                     }
                 });
+                
                 $('#clientSel').change(function() {
                     let clientId =   $(this).val();
 
